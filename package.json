@@ -1,0 +1,19 @@
+{
+  "name": "sudoku-solver",
+  "version": "1.0.0",
+  "description": "Designed to automatically solve a sudoku board\r Sudoku boards can either be entered by the user or randomly generated",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pyericl/Sudoku-Solver.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pyericl/Sudoku-Solver/issues"
+  },
+  "homepage": "https://github.com/pyericl/Sudoku-Solver#readme"
+}

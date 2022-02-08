@@ -1,0 +1,15 @@
+.squareStyle {
+    color: rgb(0, 0, 196);
+    width: 20px;
+    height: 20px;
+
+    font-size: 14px;
+}
+.squareStyle-modified {
+    color: rgb(196, 0, 137);
+    width: 20px;
+    height: 20px;
+
+    font-weight:900;
+    font-size: 13px;
+}
