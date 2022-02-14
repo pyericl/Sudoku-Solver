@@ -147,6 +147,7 @@ const sudokuSolverTool = {
         }
         return true
     },
+
     checkCurrentSudoku: (grid) => {
         // check horizontal
         for(let y=0 ; y<grid.length ; y++){
@@ -212,6 +213,52 @@ const sudokuSolverTool = {
         return true
     },
 
+    generateRandomSudoku: () => {
+        console.log('generateRandomSudoku3()')
+        let newGrid = [[0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0]]
+
+        sudokuSolverTool.recurRandom1(newGrid, 0,0)    
+
+        return newGrid
+    },
+    recurRandom1: (grid, x,y) => {
+        if(x === 0 & y === 9){
+            return true
+        }
+        let validNums = sudokuSolverTool.getValidNums(grid, x,y)
+        let nextX = x + 1
+        let nextY = y
+        if(nextX > 8){
+            nextX = 0
+            nextY = y + 1
+        }
+        
+        while(validNums.length !== 0){
+            let randomIndex = Math.floor(Math.random() * validNums.length)
+            let randomNumber = validNums.splice(randomIndex, 1)[0]
+
+            grid[y][x] = randomNumber
+
+            if( sudokuSolverTool.recurRandom1(grid, nextX, nextY) ){
+                return true
+            }
+        }
+
+        grid[y][x] = 0
+        
+        return false
+    }
+}
+
+const deprecated = {
     generateRandomSudoku: (grid) => {
         let indexList = [[0,1,2,3,4,5,6,7,8],
                          [0,1,2,3,4,5,6,7,8],
@@ -304,7 +351,35 @@ const sudokuSolverTool = {
             }
         }
         return true
-    }
+    },
+
+    generateRandomSudoku2: () => {        
+        console.log('generateRandomSudoku2()')
+        let newGrid = [[0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0],
+                        [0,0,0,0,0,0,0,0,0]]
+
+        for(let y=0 ; y<newGrid.length ; y++){
+            // let y = 0
+            let currRow = newGrid[y]
+            for(let x=0 ; x<currRow.length ; x++){
+                // let x = 0
+                let validNums = sudokuSolverTool.getValidNums(newGrid, x,y)
+                let randomIndex = Math.floor(Math.random() * validNums.length)
+                console.log(`x: ${x} , y: ${y} ... [ ${validNums} ], choose ${validNums[randomIndex]}`)
+                
+                newGrid[y][x] = validNums[randomIndex]
+            }
+        }
+
+        return newGrid
+    },
 }
 
 export default sudokuSolverTool
