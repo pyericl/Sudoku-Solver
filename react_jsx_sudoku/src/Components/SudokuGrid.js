@@ -120,7 +120,18 @@ export default class SudokuGrid extends Component {
     }
     generateRandomPuzzle = () => {
         console.log('generateRandomPuzzle()')
-        sudokuSolverTool.generateRandomSudoku(this.grid)
+        this.grid = sudokuSolverTool.generateRandomSudoku()
+
+        // find spots to cover up, might overlap, not designed to avoid places already set to 0
+        let coverCount = Math.floor(Math.random() * 68) + 13
+        while(coverCount > 0){
+            let randomX = Math.floor(Math.random() * 9)
+            let randomY = Math.floor(Math.random() * 9)
+            this.grid[randomY][randomX] = 0
+
+            coverCount--
+        }
+
         this.setState({
             grid: this.grid
         })
@@ -144,22 +155,9 @@ export default class SudokuGrid extends Component {
         return str
     }
     testCall = () => {
-        // console.log('testCall... did it work?')
-        testUtil.method1()
-        // let list1 = [1,2,3,4,5,6]
-        // console.log(`before: ${list1}`)
-        // list1.splice(3,1)
-        // console.log(`after: ${list1}`)
+        testUtil.testSplice()
     }
-    testCall1 = () => {
-        console.log(`before: ${JSON.stringify(this.errors)}`)
-        this.errors["newError"] = 'added new error'
-        this.errors.newError2 = 'added new error2'
-        console.log(`after: ${JSON.stringify(this.errors)}`)
-
-        //
-    }
-    insertGrid = () => {
+    insertTestGrid = () => {
         console.log('insertGrid()')
         this.grid = [[7, 4, 9, 3, 5, 1, 2, 8, 6],
         [8, 0, 5, 7, 0, 0, 0, 4, 9],
@@ -194,7 +192,7 @@ export default class SudokuGrid extends Component {
                 <button onClick={this.checkValidSoFar}> Check Valid So Far </button>
                 <br/>
                 <br/><button onClick={this.testCall}> Test Call </button>
-                <button onClick={this.insertGrid}> insert saved Grid </button>
+                <button onClick={this.insertTestGrid}> insert saved Grid </button>
 
             </div>
         )
