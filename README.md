@@ -20,6 +20,8 @@ could add feature to store random grid when generating random sudoku to instantl
     also empty stored grid if user changes a form?
 disable cells that have the randomly generated number?
 
+sometimes the user might enter in a board with no solution, or if already randomized add a answer with no solution
+
 
 # questions
 how do we re-render for only one form?

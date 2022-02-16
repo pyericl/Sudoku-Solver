@@ -37,6 +37,25 @@ const testUtil = {
 
         console.log(`storedValue: ${storedValue}`)
         console.log(`storedValue[0]: ${storedValue[0]}`)
+    },
+    testParseInt: () => {
+        let stringNum = '0'
+        // console.log(`instanceOf Number?: ${stringNum instanceof Number}`)
+        // console.log(`instanceOf String?: ${stringNum instanceof string}`)
+        console.log(`typeOf: ${typeof(stringNum)}`)
+        console.log(stringNum === 0 ? "squareStyle" : "squareStyle-modified")
+
+        stringNum = Number.parseInt(stringNum)
+        // console.log(`instanceOf Number?: ${stringNum instanceof Number}`)
+        // console.log(`instanceOf String?: ${stringNum instanceof string}`)
+        console.log(`typeOf: ${typeof(stringNum)}`)
+        console.log(stringNum === 0 ? "squareStyle" : "squareStyle-modified")
+
+        // console.log(`isNan: ${Number.parseInt('stringNum')}`)
+        // console.log(`isNan2: ${Number.parseInt(stringNum)}`)
+        console.log(`isNan: ${isNaN('stringNum')}`)
+        console.log(`isNan2: ${isNaN('0')}`)
+        console.log(`isNan3: ${isNaN('')}`)
     }
 }
 
