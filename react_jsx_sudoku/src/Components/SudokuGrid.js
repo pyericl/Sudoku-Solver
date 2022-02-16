@@ -5,15 +5,17 @@ import './SudokuGrid.css'
 // import squareStyle from './SudokuGrid'
 
 export default class SudokuGrid extends Component {
-    grid = [[0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0]]
+    // grid = [[0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0],
+    //         [0,0,0,0,0,0,0,0,0]]
+    grid = this.initializeGrid(0)
+    styleGrid = this.initializeGrid('squareStyle')
     errors = {}
     constructor(){
         super()
@@ -23,6 +25,18 @@ export default class SudokuGrid extends Component {
         }
     }
 
+    initializeGrid(val){
+        let grid = []
+        for(let i=0 ; i<9 ; i++){
+            let currList = []
+
+            for(let j=0 ; j<9 ; j++){
+                currList.push(val)
+            }
+            grid.push(currList)
+        }
+        return grid
+    }
     renderGridForm(){
         let y = -1
         return this.grid.map(list => {
@@ -43,16 +57,14 @@ export default class SudokuGrid extends Component {
                         type='text'
                         id = {nameId}
                         name = {nameId}
-                        className={this.getStyle(item)} 
+                        className={this.styleGrid[y][x]}
                         value = {item}
 
                         onChange={this.handleGridChange}
+                        disabled={this.styleGrid[y][x] === 'squareStyle-random-generated'}
                     />
             )
         })
-    }
-    getStyle(item){
-        return item == 0 ? "squareStyle" : "squareStyle-modified"
     }
     handleGridChange = (e) => {
         // let digitRegX = /^[0-9\b]+$/
@@ -65,15 +77,15 @@ export default class SudokuGrid extends Component {
         let x = name.split('_')[1]
         let y = name.split('_')[0]
 
-        console.log(` x: ${x}, y: ${y}`)
-        this.grid[y][x] = e.target.value
-
-        if(Number.isNaN(this.grid[y][x])){
-            this.grid[y][x] = parseInt(this.grid[y][x])
+        // change from string to number if applicable
+        console.log(` x: ${x}, y: ${y}`)        
+        let value = e.target.value
+        if(value.length !== 0){
+            console.log('here11')
+            value = Number.parseInt(value)
         }
-
-        // change the style
-        // this.getStyle(e.target.value)
+        this.grid[y][x] = value
+        this.styleGrid[y][x] = value === 0 ? "squareStyle" : "squareStyle-user-modified"
         
         // update errors on if form is empty
         if(e.target.value.length === 0){
@@ -97,30 +109,36 @@ export default class SudokuGrid extends Component {
             })
             return
         }
+
+        // pre-set the styleGrid where the solutions will be filled in
+        for(let i=0 ; i<this.grid.length ; i++){
+            for(let j=0 ; j<this.grid.length ; j++){
+                if(this.grid[i][j] === 0){
+                    this.styleGrid[i][j] = 'squareStyle-solution-generated'
+                }
+            }
+        }
         sudokuSolverTool.solveSudoku(this.grid)
         console.log(this.grid)
         this.setState({
-            grid: this.grid
+            grid: this.grid,
+            styleGrid: this.styleGrid
         })
     }
     resetGrid = () => {
-        this.grid =[[0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0,0,0]]
+        this.grid = this.initializeGrid(0)
+        this.styleGrid = this.initializeGrid('squareStyle')
+        
         this.setState({
             grid: this.grid,
+            styleGrid: this.styleGrid,
             errors: {}
         })
     }
     generateRandomPuzzle = () => {
         console.log('generateRandomPuzzle()')
         this.grid = sudokuSolverTool.generateRandomSudoku()
+        this.styleGrid = this.initializeGrid('squareStyle-random-generated')
 
         // find spots to cover up, might overlap, not designed to avoid places already set to 0
         let coverCount = Math.floor(Math.random() * 68) + 13
@@ -128,12 +146,14 @@ export default class SudokuGrid extends Component {
             let randomX = Math.floor(Math.random() * 9)
             let randomY = Math.floor(Math.random() * 9)
             this.grid[randomY][randomX] = 0
+            this.styleGrid[randomY][randomX] = 'squareStyle'
 
             coverCount--
         }
 
         this.setState({
-            grid: this.grid
+            grid: this.grid,
+            styleGrid: this.styleGrid
         })
     }
     checkGrid = () => {
@@ -154,8 +174,9 @@ export default class SudokuGrid extends Component {
         }
         return str
     }
+
     testCall = () => {
-        testUtil.testSplice()
+        testUtil.testParseInt()
     }
     insertTestGrid = () => {
         console.log('insertGrid()')

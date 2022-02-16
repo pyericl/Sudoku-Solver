@@ -5,8 +5,25 @@
 
     font-size: 14px;
 }
-.squareStyle-modified {
+.squareStyle-user-modified {
     color: rgb(196, 0, 137);
+    width: 20px;
+    height: 20px;
+
+    font-weight:900;
+    font-size: 13px;
+}
+.squareStyle-solution-generated {
+    color: green;
+    background-color: lightgreen;
+    width: 20px;
+    height: 20px;
+
+    font-weight:900;
+    font-size: 13px;
+}
+.squareStyle-random-generated {
+    color: black;
     width: 20px;
     height: 20px;
 
